@@ -1,4 +1,3 @@
-# import numpy as np
 import pandas as pd
 from pathlib import Path
 
@@ -58,9 +57,6 @@ def process_and_save_data(
     df_processed = df_processed[["year", "month", "country", "AvgTemp", "AvgUncertain", "season"]]
 
     print("Saved to parquet file.")
-    # Use pickle for fast I/O and data type preservation
-    # df_processed.to_pickle(output_dir / "df_processed.pkl")
-    # update to lazy loading set up (CSV → Parquet)
     df_processed.to_parquet(output_dir / "df_processed.parquet")
 
 

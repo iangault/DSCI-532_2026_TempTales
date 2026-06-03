@@ -16,8 +16,6 @@ CSV_FILES = [
     "GlobalTemperatures.csv",
 ]
 
-# NOTE: I used ChatGPT5 to get get the function below
-
 def load_climate_data():
     """
     Pull climate data from Kaggle and ensure all CSV files are in data/raw.

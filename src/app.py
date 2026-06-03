@@ -1,8 +1,7 @@
 # imports
 import io
 from shiny import App, Inputs, Outputs, Session, reactive, render, ui
-from shinywidgets import render_altair, render_plotly, render_widget
-import plotly.graph_objects as go
+from shinywidgets import render_altair, render_widget
 import altair as alt
 import pandas as pd
 from src.chat import qc
@@ -94,45 +93,6 @@ def server(input: Inputs, output: Outputs, session: Session):
         merged["Change"] = merged[f"{t}_avg"] - merged[f"{b}_avg"]
         merged["Month"] = merged["month"].map(lambda m: month_labels[m - 1])
         return merged[["Month", f"{b}_avg", f"{t}_avg", "Change"]].round(2)
-
-    # @reactive.Calc
-    # def filtered_yearly_data():
-    #     """Aggregated yearly data for the selected country"""
-    #     return df_yearly[df_yearly["Country"] == input.country()]
-
-    # @reactive.Calc
-    # def filtered_global_data():
-    #     """Global data for the selected year range"""
-    #     b, t, err = selected_range()
-    #     if err:
-    #         return pd.DataFrame()
-
-    #     data = filtered_yearly_data()
-    #     return data[(data["year"] >= b) & (data["year"] <= t)]
-
-    # @reactive.Calc
-    # def monthly_comparison_data():
-    #     """Monthly avg temperature comparison for baseline vs target year (long format for chart)."""
-    #     b, t, err = selected_range()
-    #     if err:
-    #         return pd.DataFrame()
-
-    #     country = input.country()
-    #     df = df_monthly[(df_monthly["Country"] == country) &
-    #                     (df_monthly["year"].isin([b, t]))]
-    #     if df.empty:
-    #         return pd.DataFrame()
-
-    #     month_labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    #                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    #     base = df[df["year"] == b][["month", "AvgTemp"]].rename(
-    #         columns={"AvgTemp": f"{b}_avg"})
-    #     target = df[df["year"] == t][["month", "AvgTemp"]].rename(
-    #         columns={"AvgTemp": f"{t}_avg"})
-    #     merged = base.merge(target, on="month")
-    #     merged["Change"] = merged[f"{t}_avg"] - merged[f"{b}_avg"]
-    #     merged["Month"] = merged["month"].map(lambda m: month_labels[m - 1])
-    #     return merged[["Month", f"{b}_avg", f"{t}_avg", "Change"]].round(2)
 
     @reactive.Calc
     def monthly_comparison_wide():
@@ -264,9 +224,6 @@ def server(input: Inputs, output: Outputs, session: Session):
         df_b = expr_b.execute()
         df_t = expr_t.execute()
 
-        # df_b = df_seasonal[(df_seasonal["Country"] == country) & (df_seasonal["year"] == b)]
-        # df_t = df_seasonal[(df_seasonal["Country"] == country) & (df_seasonal["year"] == t)]
-
         seasons = ["Spring", "Summer", "Fall", "Winter"]
         rows = []
 
@@ -386,8 +343,7 @@ def server(input: Inputs, output: Outputs, session: Session):
     # World Heatmap
     # =============================
     
-    # all_countries = sorted(df_yearly["Country"].unique())
-    all_countries = country_choices # we already have all_countries generated in utils.py
+    all_countries = country_choices
     initial_map = build_base_map(all_countries)
 
     def _map_click(trace, points, state):
@@ -435,12 +391,6 @@ def server(input: Inputs, output: Outputs, session: Session):
         # Execute the map data calculation
         merged = merged_expr.execute()
 
-        # # --- update temperature values (diff = target - baseline) ---
-        # df_b = df_yearly[df_yearly["year"] == b][["Country", "avg_temp"]].rename(columns={"avg_temp": "temp_b"})
-        # df_t = df_yearly[df_yearly["year"] == t][["Country", "avg_temp"]].rename(columns={"avg_temp": "temp_t"})
-        # merged = df_b.merge(df_t, on="Country", how="outer")
-        # merged["diff"] = merged["temp_t"] - merged["temp_b"]
-        
         # Ensure no duplicates exist for 'Country' before setting it as index
         merged = merged.drop_duplicates(subset=["Country"])
         df_aligned = merged.set_index("Country").reindex(all_countries)

@@ -1,6 +1,5 @@
 import os
 import pandas as pd
-import numpy as np
 from dotenv import load_dotenv
 import chatlas as ctl
 from querychat import QueryChat
@@ -32,63 +31,8 @@ chat = ctl.ChatGithub(
 ################### Revised using ibis expressions
 # round the AvgTemp
 df_monthly = df_monthly.mutate(AvgTemp=_.AvgTemp.round(2))
-# df_monthly["AvgTemp"] = np.round(df_monthly["AvgTemp"], 2)
 
-# subset to the top 50 population countries (to decrease the sample size (org 243 countries))
-top50_countries = [
-    "India",
-    "China",
-    "United States",
-    "Indonesia",
-    "Pakistan",
-    "Nigeria",
-    "Brazil",
-    "Bangladesh",
-    "Russia",
-    "Mexico",
-    "Ethiopia",
-    "Japan",
-    "Philippines",
-    "Egypt",
-    "Congo (Democratic Republic Of The)",
-    "Vietnam",
-    "Iran",
-    "Turkey",
-    "Germany",
-    "Thailand",
-    "United Kingdom",
-    "France",
-    "Tanzania",
-    "South Africa",
-    "Italy",
-    "Kenya",
-    "Burma",
-    "Colombia",
-    "South Korea",
-    "Uganda",
-    "Spain",
-    "Argentina",
-    "Algeria",
-    "Sudan",
-    "Ukraine",
-    "Iraq",
-    "Afghanistan",
-    "Poland",
-    "Canada",
-    "Morocco",
-    "Saudi Arabia",
-    "Uzbekistan",
-    "Peru",
-    "Angola",
-    "Malaysia",
-    "Mozambique",
-    "Ghana",
-    "Yemen",
-    "Nepal",
-    "Venezuela"
-]
-
-# subset to the top 100 population countries (to decrease the sample size (org 243 countries))
+# subset to top 100 population countries to decrease sample size (originally 243)
 top100_countries = [
     "India",
     "China",

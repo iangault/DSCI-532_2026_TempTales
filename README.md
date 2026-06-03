@@ -1,7 +1,7 @@
 # TempTales: Climate Change Explorer Dashboard
 
-| | |
-| :--- | :--- |
+|  |  |
+|:-----------------------------------|:-----------------------------------|
 | **License** | [![License](https://img.shields.io/github/license/ubc-mds/dsci-532_2026_26_tbd?label=License)](LICENSE) |
 | **Python** | [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/) |
 | **CI** | [![CI](https://github.com/iangault/DSCI-532_2026_TempTales/actions/workflows/ci.yml/badge.svg)](https://github.com/iangault/DSCI-532_2026_TempTales/actions/workflows/ci.yml) |
@@ -10,13 +10,7 @@
 
 This is a personal continuation of a UBC MDS group project (DSCI 532, 2026). The original dashboard was built collaboratively; this fork is a solo rebuild and improvement focused on production-readiness: adding CI, fixing test infrastructure, improving code quality, and preparing for redeployment.
 
-**Skills this project covers:**
-- **Python Shiny** — reactive server/UI separation, ibis lazy expressions, DuckDB backend
-- **Data visualization** — Altair (time-series, comparison charts), Plotly (choropleth map)
-- **Testing** — pytest unit tests + Playwright end-to-end browser tests (62 unit + 6 UI tests)
-- **CI/CD** — GitHub Actions workflow: unit tests → Playwright UI tests on every push/PR
-- **LLM integration** — GitHub Models API (`gpt-4.1-mini`) via `chatlas` + `querychat` for an AI assistant tab
-- **Cloud deployment** — Posit Connect Cloud via GitHub integration
+**Skills this project covers:** - **Python Shiny** — reactive server/UI separation, ibis lazy expressions, DuckDB backend - **Data visualization** — Altair (time-series, comparison charts), Plotly (choropleth map) - **Testing** — pytest unit tests + Playwright end-to-end browser tests (62 unit + 6 UI tests) - **CI/CD** — GitHub Actions workflow: unit tests → Playwright UI tests on every push/PR - **LLM integration** — GitHub Models API (`gpt-4.1-mini`) via `chatlas` + `querychat` for an AI assistant tab - **Cloud deployment** — Posit Connect Cloud via GitHub integration
 
 ## Overview
 
@@ -26,13 +20,13 @@ Deployed dashboard: https://019c9116-f7e7-177d-42c7-e2e3b140264c.share.connect.p
 
 ## Features
 
-- **Country selection** — explore temperature data for any country in the dataset
-- **Two-year comparison** — validated baseline vs. target year inputs with error messaging
-- **Monthly dual-line chart** — Altair overlay of monthly averages (Jan–Dec) with hover tooltips
-- **Data table** — monthly comparison with red/blue diverging color scale; CSV export
-- **World heatmap** — Plotly choropleth of global temperatures for the selected year
-- **Seasonal breakdown** — seasonal averages and historical event context
-- **AI assistant** — natural language queries over the dataset via GitHub Models API
+-   **Country selection** — explore temperature data for any country in the dataset
+-   **Two-year comparison** — validated baseline vs. target year inputs with error messaging
+-   **Monthly dual-line chart** — Altair overlay of monthly averages (Jan–Dec) with hover tooltips
+-   **Data table** — monthly comparison with red/blue diverging color scale; CSV export
+-   **World heatmap** — Plotly choropleth of global temperatures for the selected year
+-   **Seasonal breakdown** — seasonal averages and historical event context
+-   **AI assistant** — natural language queries over the dataset via GitHub Models API
 
 ### Demo
 
@@ -40,7 +34,7 @@ Deployed dashboard: https://019c9116-f7e7-177d-42c7-e2e3b140264c.share.connect.p
 
 ## Project structure
 
-```
+```         
 src/
 ├── app.py           # entry point — reactive server logic only
 ├── ui.py            # all layout and widget definitions
@@ -62,7 +56,7 @@ tests/
 
 ## Local setup
 
-```bash
+``` bash
 git clone https://github.com/iangault/DSCI-532_2026_TempTales.git
 cd DSCI-532_2026_TempTales
 make install            # creates the '532_project' conda env
@@ -71,19 +65,19 @@ conda activate 532_project
 
 **Data:** the processed parquet is committed — no download needed. If you need to regenerate it from raw Kaggle CSVs:
 
-```bash
+``` bash
 make db
 ```
 
 **AI tab:** requires a `GITHUB_API_KEY` in a `.env` file at the project root. Get one at [github.com/marketplace/models](https://github.com/marketplace/models). Without it the app starts but the AI tab will error.
 
-```
+```         
 GITHUB_API_KEY=your_token_here
 ```
 
 **Run the app:**
 
-```bash
+``` bash
 make run   # launches http://localhost:8000 with auto-reload
 ```
 
@@ -92,12 +86,14 @@ make run   # launches http://localhost:8000 with auto-reload
 All test dependencies are included in the conda env — no separate `pip install` needed.
 
 **Unit tests** (fast, no browser):
-```bash
+
+``` bash
 pytest tests/ --ignore=tests/test_ui_playwright.py -v
 ```
 
 **Playwright UI tests** (starts the app, drives a real browser):
-```bash
+
+``` bash
 playwright install --with-deps chromium   # one-time browser binary install
 pytest tests/test_ui_playwright.py -v -k "chromium"
 ```
@@ -108,8 +104,8 @@ pytest tests/test_ui_playwright.py -v -k "chromium"
 
 Target: **Posit Connect Cloud** via GitHub integration. `make run` is local-only.
 
-- Set `GITHUB_API_KEY` as an environment variable in the Connect app settings (not `.env`, which is local-only)
-- The parquet file is committed, so no Kaggle credentials are needed at deploy time
+-   Set `GITHUB_API_KEY` as an environment variable in the Connect app settings (not `.env`, which is local-only)
+-   The parquet file is committed, so no Kaggle credentials are needed at deploy time
 
 ## Original contributors
 
