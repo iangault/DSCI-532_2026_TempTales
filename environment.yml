@@ -15,6 +15,7 @@ dependencies:
   - watchdog
   - ibis-duckdb
   - sqlalchemy
+  - anywidget
   - pip
   - pip:
     - kagglehub

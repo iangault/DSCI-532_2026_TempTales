@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import pandas as pd
 from dotenv import load_dotenv
 import chatlas as ctl
@@ -140,9 +141,15 @@ top100_countries = [
 # df_monthly = df_monthly[df_monthly["Country"].isin(top100_countries)]
 df_monthly = df_monthly.filter(_.Country.isin(top100_countries))
 
+_GREETING_CACHE = Path(__file__).parent / ".querychat_greeting.txt"
+
 qc = QueryChat(
-    df_monthly.execute(), 
-    "temperature_data", 
-    client=chat
+    df_monthly.execute(),
+    "temperature_data",
+    client=chat,
+    greeting=_GREETING_CACHE if _GREETING_CACHE.exists() else None
 )
+
+if not _GREETING_CACHE.exists():
+    _GREETING_CACHE.write_text(qc.generate_greeting())
 

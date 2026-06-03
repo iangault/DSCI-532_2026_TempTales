@@ -10,6 +10,7 @@ shinychat
 querychat
 ibis-duckdb
 sqlalchemy
+anywidget
 pyarrow
 kagglehub
 pytest
