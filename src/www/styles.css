@@ -1,0 +1,205 @@
+/* ===== TempTales Palette ===== */
+:root {
+  --tt-dark-slate:  #2e3d3d;
+  --tt-sage:        #7a9e8a;
+  --tt-warm-paper:  #e8ddd0;
+  --tt-off-white:   #f4f1ec;
+  --tt-deep-sage:   #4a7c6f;
+  --tt-border:      #c8c0b5;
+}
+
+/* ===== Page background & body text ===== */
+body, html {
+  background-color: var(--tt-off-white) !important;
+  color: var(--tt-dark-slate);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+  background-color: var(--tt-dark-slate) !important;
+  border-bottom: 2px solid var(--tt-deep-sage);
+  box-shadow: 0 2px 8px rgba(46, 61, 61, 0.25);
+}
+.navbar-brand,
+.navbar .navbar-brand span,
+.navbar .text-dark {
+  color: #fff !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.navbar .nav-link,
+.navbar .nav-underline .nav-link,
+.nav-underline .nav-link {
+  color: #fff !important;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+.navbar .nav-link:hover,
+.nav-underline .nav-link:hover {
+  color: var(--tt-warm-paper) !important;
+}
+/* Active tab — warm paper underline, high contrast on dark slate */
+.navbar .nav-link.active,
+.navbar .nav-link[aria-selected="true"],
+.nav-underline .nav-link.active,
+.nav-underline .nav-link[aria-selected="true"] {
+  color: var(--tt-warm-paper) !important;
+  border-bottom: 3px solid var(--tt-warm-paper) !important;
+  font-weight: 700;
+  background-color: rgba(232, 221, 208, 0.12) !important;
+}
+
+/* ===== Cards ===== */
+.card {
+  border-color: var(--tt-border);
+  background-color: #fff;
+  box-shadow: 0 1px 5px rgba(46, 61, 61, 0.08);
+  transition: box-shadow 0.2s ease;
+}
+.card:hover {
+  box-shadow: 0 3px 10px rgba(46, 61, 61, 0.13);
+}
+.card-header {
+  background-color: var(--tt-warm-paper) !important;
+  color: var(--tt-dark-slate) !important;
+  border-bottom: 1px solid var(--tt-deep-sage) !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* ===== Sidebar ===== */
+.bslib-sidebar-layout > .sidebar,
+.bslib-sidebar-layout > .bslib-sidebar-panel {
+  background-color: #ede8e0 !important;
+  border-right: 1px solid var(--tt-deep-sage) !important;
+}
+.sidebar-title {
+  color: var(--tt-dark-slate) !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ===== Form controls ===== */
+.form-control,
+.form-select {
+  border-color: var(--tt-border);
+  background-color: #faf8f5;
+  border-radius: 0.35rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--tt-deep-sage) !important;
+  box-shadow: 0 0 0 0.2rem rgba(74, 124, 111, 0.25) !important;
+  background-color: #fff;
+}
+.form-label {
+  color: var(--tt-dark-slate);
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+/* Selectize */
+.selectize-input {
+  border-color: var(--tt-border) !important;
+  background-color: #faf8f5 !important;
+  border-radius: 0.35rem !important;
+}
+.selectize-input.focus {
+  border-color: var(--tt-deep-sage) !important;
+  box-shadow: 0 0 0 0.2rem rgba(74, 124, 111, 0.25) !important;
+}
+.selectize-dropdown .option.active,
+.selectize-dropdown .option:hover {
+  background-color: var(--tt-sage) !important;
+  color: #fff;
+}
+
+/* ===== Buttons ===== */
+.btn-primary,
+.btn-default,
+.btn-secondary {
+  background-color: var(--tt-sage) !important;
+  border-color: var(--tt-deep-sage) !important;
+  color: #fff !important;
+  border-radius: 0.35rem;
+  font-weight: 500;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-default:hover,
+.btn-secondary:hover {
+  background-color: var(--tt-deep-sage) !important;
+  border-color: var(--tt-dark-slate) !important;
+  box-shadow: 0 2px 6px rgba(46, 61, 61, 0.2);
+}
+
+/* ===== Links ===== */
+a {
+  color: var(--tt-deep-sage);
+  transition: color 0.15s ease;
+}
+a:hover {
+  color: var(--tt-dark-slate);
+}
+
+/* ===== Footer ===== */
+footer.border-top {
+  background-color: var(--tt-dark-slate) !important;
+  border-top-color: var(--tt-deep-sage) !important;
+}
+footer .text-muted,
+footer span {
+  color: #c8ddd9 !important;
+}
+footer a {
+  color: var(--tt-warm-paper) !important;
+}
+footer a:hover {
+  color: #fff !important;
+}
+
+/* ===== Data tables — zebra striping ===== */
+.data-table-compact table tbody tr:nth-child(even),
+.shiny-data-frame-output table tbody tr:nth-child(even) {
+  background-color: #f7f3ee;
+}
+.data-table-compact table tbody tr:hover,
+.shiny-data-frame-output table tbody tr:hover {
+  background-color: #eee7dc;
+}
+.data-table-compact table thead th,
+.shiny-data-frame-output table thead th {
+  background-color: var(--tt-warm-paper);
+  color: var(--tt-dark-slate);
+  font-weight: 600;
+  border-bottom: 2px solid var(--tt-deep-sage);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* ===== Scrollbars (webkit) ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--tt-off-white);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--tt-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--tt-sage);
+}
+
+/* ===== Misc ===== */
+.shiny-output-error-validation {
+  color: #b85c38;
+}

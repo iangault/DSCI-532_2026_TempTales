@@ -316,6 +316,7 @@ data_table_css = ui.tags.style("""
 # Footer in page_navbar so it appears on both Dashboard and AI Assistant
 # ==========================================
 app_ui = ui.TagList(
+    ui.tags.link(rel="stylesheet", href="styles.css"),
     data_table_css,
     ui.page_navbar(
         ui.nav_panel("Dashboard", main_content, value="dashboard"),
