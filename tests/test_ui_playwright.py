@@ -35,6 +35,7 @@
 # AI USAGE:
 #   AI was used in brainstorming the test cases and writing the docstrings. 
 
+import socket
 import subprocess
 import time
 
@@ -66,10 +67,16 @@ def shiny_app():
         stderr=subprocess.PIPE,
     )
 
-    # Give the app time to boot before tests start hitting it.
-    # 5 seconds is conservative — increase to 10 if your machine is slow
-    # or if you see "ERR_CONNECTION_REFUSED" errors in the first tests.
-    time.sleep(5)
+    # Poll until the port accepts connections (up to 30 seconds).
+    for _ in range(60):
+        try:
+            with socket.create_connection(("localhost", 8000), timeout=0.5):
+                break
+        except OSError:
+            time.sleep(0.5)
+    else:
+        proc.terminate()
+        raise RuntimeError("Shiny app did not start within 30 seconds")
 
     # 'yield' passes the base URL to every test that uses this fixture.
     # Everything after yield runs on teardown (after all tests finish).
