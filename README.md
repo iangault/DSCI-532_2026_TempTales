@@ -3,242 +3,118 @@
 | | |
 | :--- | :--- |
 | **License** | [![License](https://img.shields.io/github/license/ubc-mds/dsci-532_2026_26_tbd?label=License)](LICENSE) |
-| **Python** | [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/) |
-| **Status** | [![Repo Status](https://img.shields.io/badge/repo%20status-Active-brightgreen)](https://github.com/ubc-mds/dsci-532_2026_26_tbd) |
+| **Python** | [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/) |
+| **CI** | [![CI](https://github.com/iangault/DSCI-532_2026_TempTales/actions/workflows/ci.yml/badge.svg)](https://github.com/iangault/DSCI-532_2026_TempTales/actions/workflows/ci.yml) |
+
+## About this repo
+
+This is a personal continuation of a UBC MDS group project (DSCI 532, 2026). The original dashboard was built collaboratively; this fork is a solo rebuild and improvement focused on production-readiness: adding CI, fixing test infrastructure, improving code quality, and preparing for redeployment.
+
+**Skills this project covers:**
+- **Python Shiny** — reactive server/UI separation, ibis lazy expressions, DuckDB backend
+- **Data visualization** — Altair (time-series, comparison charts), Plotly (choropleth map)
+- **Testing** — pytest unit tests + Playwright end-to-end browser tests (62 unit + 6 UI tests)
+- **CI/CD** — GitHub Actions workflow: unit tests → Playwright UI tests on every push/PR
+- **LLM integration** — GitHub Models API (`gpt-4.1-mini`) via `chatlas` + `querychat` for an AI assistant tab
+- **Cloud deployment** — Posit Connect Cloud via GitHub integration
 
 ## Overview
 
-**TempTales** is an interactive dashboard that allows users to explore global and country-level temperature trends over time while connecting these trends to major historical events. Users can select a country, view seasonal and monthly temperature patterns, and see how significant events like industrialization or world wars align with temperature changes. A world heatmap provides a spatial view of temperatures for selected years, making regional patterns immediately clear. This tool consolidates climate data from 1860-2012 into a user-friendly interface for researchers, students, policy makers, and environmentally conscious individuals.
+**TempTales** is an interactive dashboard for exploring global and country-level temperature trends from 1860–2012. Users can select a country, compare two years, view seasonal and monthly patterns, and see temperature shifts on a world heatmap. An AI assistant tab lets users query the data in natural language.
 
-Deployed Dashboard URL: https://019c9116-f7e7-177d-42c7-e2e3b140264c.share.connect.posit.cloud
+Deployed dashboard: https://019c9116-f7e7-177d-42c7-e2e3b140264c.share.connect.posit.cloud
 
-## Table of Contents
+## Features
 
-- [TempTales: Climate Change Explorer Dashboard](#temptales-climate-change-explorer-dashboard)
-  - [Table of Contents](#table-of-contents)
-  - [For Users](#for-users)
-    - [Features](#features)
-    - [Demo](#demo)
-  - [For Contributors](#for-contributors)
-    - [Project Directory Structure](#project-directory-structure)
-    - [Installation](#installation)
-    - [Usage (Makefile Guide)](#usage-makefile-guide)
-      - [Initialization](#initialization)
-      - [Running the App](#running-the-app)
-      - [Cleaning Data](#cleaning-data)
-    - [Developer Setup](#developer-setup)
-    - [Contributing](#contributing)
-  - [Contributors](#contributors)
-  - [Copyright](#copyright)
-
-
-## For Users
-
-**TempTales** is an interactive dashboard that allows users to explore global and country-level temperature trends over time while connecting these trends to major historical events. Users can select a country, view seasonal and monthly temperature patterns, and see how significant events like industrialization or world wars align with temperature changes. A world heatmap provides a spatial view of temperatures for selected years, making regional patterns immediately clear. This tool consolidates climate data from 1860-2012 into a user-friendly interface for researchers, students, policy makers, and environmentally conscious individuals.
-
-Rendered Dashboard links: 
-- main branch: https://019c9116-f7e7-177d-42c7-e2e3b140264c.share.connect.posit.cloud
-- dev branch: https://019c9879-5ec6-dc91-2d43-ec77c0e6fdac.share.connect.posit.cloud
-
-### Features
-
-- **Country selection** – Explore temperature data for any country in the dataset
-- **Two-year comparison** – Compare baseline vs. target year with validated year inputs
-- **Monthly dual-line chart** – Altair overlay of monthly average temperatures (Jan–Dec) with hover tooltips and vertical rule
-- **Data table** – Monthly comparison table with red/blue color coding for change magnitude; CSV export
-- **World heatmap** – Choropleth map of global temperatures for the selected target year
-- **Seasonal & historical context** – Seasonal temperature breakdown and historical event labels
+- **Country selection** — explore temperature data for any country in the dataset
+- **Two-year comparison** — validated baseline vs. target year inputs with error messaging
+- **Monthly dual-line chart** — Altair overlay of monthly averages (Jan–Dec) with hover tooltips
+- **Data table** — monthly comparison with red/blue diverging color scale; CSV export
+- **World heatmap** — Plotly choropleth of global temperatures for the selected year
+- **Seasonal breakdown** — seasonal averages and historical event context
+- **AI assistant** — natural language queries over the dataset via GitHub Models API
 
 ### Demo
 
 ![Demo](img/demo.gif)
 
-## For Contributors
+## Project structure
 
-### Project Directory Structure
+```
+src/
+├── app.py           # entry point — reactive server logic only
+├── ui.py            # all layout and widget definitions
+├── plot.py          # Altair chart builders (monthly line, yearly, diff)
+├── map.py           # Plotly choropleth map
+├── utils.py         # ibis/DuckDB connection; pre-aggregated lazy tables
+├── chat.py          # QueryChat + ChatGithub setup for the AI tab
+├── data_count.py    # temperature/observation summary helpers
+└── table_styles.py  # diverging colour styles for DataGrid tables
 
-The core logic of the project is located in the `src/` directory.
-
-```text
-├── data/                   # Data storage
-│   ├── raw/                # Raw climate CSVs (downloaded via data_loader.py)
-│   ├── processed/          # High-performance Parquet files (generated via data_processor.py)
-│   └── figures/            # Static analysis and EDA figures
-├── img/                    # Images used in README (sketches, screenshots)
-├── notebooks/              # Jupyter Notebooks for EDA and prototyping
-├── reports/                # Project proposals and milestone reports
-├── src/                    # Source code
-│   ├── __init__.py         # Marks src as a Python package
-│   ├── app.py              # Main Shiny App entry point; handles reactive server logic
-│   ├── chat.py             # AI Assistant configuration and QueryChat integration
-│   ├── data_count.py       # Helper functions for temperature and observation summaries
-│   ├── data_loader.py      # Script to download raw datasets from Kaggle
-│   ├── data_processor.py   # Script to transform raw CSVs into optimized Parquet format
-│   ├── map.py              # Plotly logic for geographic choropleth visualizations
-│   ├── plot.py             # Altair chart builders for time-series and comparison plots
-│   ├── ui.py               # Frontend layout, selectize inputs, and page assembly
-│   └── utils.py            # Ibis/DuckDB connection and data pre-aggregation logic
-├── tests/                  # Automated testing suite
-│   ├── __init__.py
-│   ├── test_data_count.py  # Tests for observation count logic
-│   ├── test_data_preprocessor.py # Tests for Parquet transformation pipeline
-│   ├── test_map.py         # Tests for geographic highlight and zoom logic
-│   ├── test_plot.py        # Tests for Altair chart generation
-│   ├── test_table_styles.py # Tests for diverging color scale logic
-│   └── test_ui_playwright.py # End-to-end browser tests for UI interactivity
-├── CHANGELOG.md            # Record of notable project changes
-├── CODE_OF_CONDUCT.md      # Community and collaboration expectations
-├── CONTRIBUTING.md         # Contribution guidelines for collaborators
-├── LICENSE                 # MIT Project license
-├── Makefile                # Automation scripts for data and environment setup
-├── README.md               # Main project documentation
-├── environment.yml         # Conda environment configuration (includes ibis-duckdb, sqlalchemy)
-├── requirements.txt        # Python package dependencies (includes pyarrow, pyarrow-hotfix)
-└── team.txt                # Team member information and roles
+tests/
+├── test_data_count.py       # 9 tests — data_count_prep()
+├── test_data_processor.py   # 13 tests — get_season()
+├── test_map.py              # 9 tests — apply_country_highlight()
+├── test_plot.py             # 9 tests — build_temp_chart()
+├── test_table_styles.py     # 9 tests — table_styles_wide(), diverging_styles()
+└── test_ui_playwright.py    # 6 UI tests — full dashboard in Chromium
 ```
 
-### Installation
-
-This project uses `conda` for dependency management. Ensure you have Anaconda or Miniconda installed.
+## Local setup
 
 ```bash
-# Clone the repository
-$ git clone https://github.com/UBC-MDS/DSCI-532_2026_26_TempTales.git
-
-# Navigate to the project directory
-$ cd DSCI-532_2026_26_TempTales
-
-# Create the environment using Makefile
-$ make install
+git clone https://github.com/iangault/DSCI-532_2026_TempTales.git
+cd DSCI-532_2026_TempTales
+make install            # creates the '532_project' conda env
+conda activate 532_project
 ```
 
-### Configure GitHub API Key
-
-Some features of the dashboard (like the AI Assistant or QueryChat) require access to GitHub’s API. To set it up:
-
-1. Sign up at <https://github.com/marketplace/models> to get an API key.
-2. In your project root, create a .env file if it doesn’t exist.
-3. Add your GitHub API key to .env:
+**Data:** the processed parquet is committed — no download needed. If you need to regenerate it from raw Kaggle CSVs:
 
 ```bash
-GITHUB_API_KEY=your_github_api_key_here
+make db
 ```
 
-### Usage (Makefile Guide)
+**AI tab:** requires a `GITHUB_API_KEY` in a `.env` file at the project root. Get one at [github.com/marketplace/models](https://github.com/marketplace/models). Without it the app starts but the AI tab will error.
 
-This project uses `make` to automate common tasks. Below is a guide to the available commands:
-
-#### Initialization
-
-Before running the app for the first time, you must download and process the data:
-
-```bash
-$ make db
+```
+GITHUB_API_KEY=your_token_here
 ```
 
-This command runs `src/data_loader.py` to download the data and `src/data_processor.py` to convert it into the required format.
-
-#### Running the App
-
-To start the **Shiny** app in development mode:
+**Run the app:**
 
 ```bash
-$ make run
+make run   # launches http://localhost:8000 with auto-reload
 ```
 
-This enables reload mode (auto-restart on file save) and automatically launches the app in your browser.
+## Tests
 
-#### Cleaning Data
+All test dependencies are included in the conda env — no separate `pip install` needed.
 
-If you need to reset the data environment (delete all raw and processed data files):
-
+**Unit tests** (fast, no browser):
 ```bash
-$ make clean
+pytest tests/ --ignore=tests/test_ui_playwright.py -v
 ```
 
-**Note**: This command will prompt for confirmation (`y/N`) to prevent accidental deletion.
-
-### Developer Setup
-
-If you wish to contribute to the project, please follow these steps:
-
-1. Clone the repository to your local machine.
-2. Create the conda environment: `make install`.
-3. Activate the environment: `conda activate 532_project`.
-4. Run the app locally using `make run` to test changes.
-
-### Running the Tests
-
-#### Prerequisites
-
-Ensure you have the required packages installed:
-
+**Playwright UI tests** (starts the app, drives a real browser):
 ```bash
-pip install pytest playwright pytest-playwright
-playwright install
-```
-
-#### All Tests (single command)
-
-```bash
-pytest tests/ -v
-```
-
-#### Unit Tests
-
-Test core logic functions in isolation (no app required):
-
-```bash
-# Run all unit tests
-pytest tests/ -v
-
-# Run a single test file
-pytest tests/test_plot.py -v
-```
-
-#### UI Tests (Playwright)
-
-Test the running dashboard in a real browser.
-**The app must not already be running on port 8000.**
-
-```bash
-# Run on all browsers (Chromium, Firefox, WebKit) — 18 tests total
-pytest tests/test_ui_playwright.py -v
-
-# Run on a single browser only
+playwright install --with-deps chromium   # one-time browser binary install
 pytest tests/test_ui_playwright.py -v -k "chromium"
-pytest tests/test_ui_playwright.py -v -k "firefox"
-pytest tests/test_ui_playwright.py -v -k "webkit"
 ```
 
-To watch the tests run live in a visible browser window, use the
-`--headed` flag with `--slowmo` to slow things down enough to follow:
+> Only Chromium is installed in this setup. Always pass `-k "chromium"` — Firefox and WebKit will error without their binaries.
 
-```bash
-# Watch on Firefox, 1.5 seconds between each action
-pytest tests/test_ui_playwright.py -v -k "firefox" --slowmo 1500 --headed
-```
+## Deployment
 
-#### Test Coverage Summary
+Target: **Posit Connect Cloud** via GitHub integration. `make run` is local-only.
 
-| File | Function tested | Tests |
-|---|---|---|
-| `tests/test_data_preprocessor.py` | `get_season()` | 13 |
-| `tests/test_data_count.py` | `data_count_prep()` | 9 |
-| `tests/test_table_styles.py` | `table_styles_wide()`, `diverging_styles()` | 9 |
-| `tests/test_map.py` | `apply_country_highlight()` | 9 |
-| `tests/test_plot.py` | `build_temp_chart()` | 9 |
-| `tests/test_ui_playwright.py` | Full dashboard UI (3 browsers) | 18 |
+- Set `GITHUB_API_KEY` as an environment variable in the Connect app settings (not `.env`, which is local-only)
+- The parquet file is committed, so no Kaggle credentials are needed at deploy time
 
-### Contributing
-
-Contributors are expected to follow the guidelines outlined in **[CONTRIBUTING.md](./CONTRIBUTING.md)**. Please review this document before submitting issues or pull requests.
-
-## Contributors
+## Original contributors
 
 Emily Jin, Ian Gault, Purity Jangaya, Yusheng Li
 
-## Copyright
+## License
 
-- Copyright © 2026 Emily Jin, Ian Gault, Purity Jangaya, Yusheng Li.
-- Free software distributed under the [MIT License](./LICENSE).
+Copyright © 2026 Emily Jin, Ian Gault, Purity Jangaya, Yusheng Li. Distributed under the [MIT License](./LICENSE).
