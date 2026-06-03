@@ -28,4 +28,4 @@ jobs:
         run: playwright install --with-deps chromium
 
       - name: Run Playwright UI tests
-        run: pytest tests/test_ui_playwright.py -v
+        run: pytest tests/test_ui_playwright.py -v -k "chromium"
