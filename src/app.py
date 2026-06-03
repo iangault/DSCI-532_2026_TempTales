@@ -476,14 +476,23 @@ def server(input: Inputs, output: Outputs, session: Session):
 
         return df_yearly
 
-    @render_widget
+    @render_altair
     def ai_centred_ts_plot():
         df = ai_yearly_prep()
-        # Always return a valid plot even if empty
         if df.empty:
-            return alt.Chart(pd.DataFrame(columns=["year", "AvgTemp_centered", "Country"])).mark_line()
-        plot = build_yearly_plot(df)
-        return plot
+            empty_df = pd.DataFrame({"x": [0.5], "y": [0.5], "msg": ["Ask the AI a question to see results"]})
+            return (
+                alt.Chart(empty_df)
+                .mark_text(align="center", baseline="middle", fontSize=14, color="#6c757d")
+                .encode(
+                    x=alt.X("x:Q", axis=None, scale=alt.Scale(domain=[0, 1])),
+                    y=alt.Y("y:Q", axis=None, scale=alt.Scale(domain=[0, 1])),
+                    text="msg:N"
+                )
+                .properties(height=300)
+                .configure_view(strokeWidth=0)
+            )
+        return build_yearly_plot(df)
 
     @reactive.Calc
     def ai_monthly_diff_prep():
@@ -528,14 +537,23 @@ def server(input: Inputs, output: Outputs, session: Session):
         # Keep only needed columns
         return df_pivot[["Country", "month", "AvgTemp_diff"]]
 
-    @render_widget
+    @render_altair
     def ai_monthly_change_plot():
         df = ai_monthly_diff_prep()
-        if df is None or df.empty:
-            return alt.Chart(pd.DataFrame(columns=["month", "AvgTemp_diff", "Country"])).mark_line()
-        
-        plot = build_diff_plot(df)
-        return plot
+        if df is None or (isinstance(df, pd.DataFrame) and df.empty):
+            empty_df = pd.DataFrame({"x": [0.5], "y": [0.5], "msg": ["Ask the AI a question to see results"]})
+            return (
+                alt.Chart(empty_df)
+                .mark_text(align="center", baseline="middle", fontSize=14, color="#6c757d")
+                .encode(
+                    x=alt.X("x:Q", axis=None, scale=alt.Scale(domain=[0, 1])),
+                    y=alt.Y("y:Q", axis=None, scale=alt.Scale(domain=[0, 1])),
+                    text="msg:N"
+                )
+                .properties(height=300)
+                .configure_view(strokeWidth=0)
+            )
+        return build_diff_plot(df)
     
 
 from pathlib import Path

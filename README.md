@@ -16,7 +16,7 @@ This is a personal continuation of a UBC MDS group project (DSCI 532, 2026). The
 
 **TempTales** is an interactive dashboard for exploring global and country-level temperature trends from 1860–2012. Users can select a country, compare two years, view seasonal and monthly patterns, and see temperature shifts on a world heatmap. An AI assistant tab lets users query the data in natural language.
 
-Deployed dashboard: https://019c9116-f7e7-177d-42c7-e2e3b140264c.share.connect.posit.cloud
+Deployed dashboard: https://iangault-dsci-532-2026-temptales.share.connect.posit.cloud/
 
 ## Features
 
@@ -27,10 +27,6 @@ Deployed dashboard: https://019c9116-f7e7-177d-42c7-e2e3b140264c.share.connect.p
 -   **World heatmap** — Plotly choropleth of global temperatures for the selected year
 -   **Seasonal breakdown** — seasonal averages and historical event context
 -   **AI assistant** — natural language queries over the dataset via GitHub Models API
-
-### Demo
-
-![Demo](img/demo.gif)
 
 ## Project structure
 
