@@ -8,7 +8,7 @@ chatlas
 python-dotenv
 shinychat
 querychat
-ibis-duckdb
+ibis-framework[duckdb]
 sqlalchemy
 anywidget
 pyarrow
