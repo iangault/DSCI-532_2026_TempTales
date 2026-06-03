@@ -264,13 +264,17 @@ def server(input: Inputs, output: Outputs, session: Session):
     # =============================
     @render.ui
     def title_placeholder():
+        if input.main_nav() == "ai_assistant":
+            return ui.span(
+                "TempTales Climate Explorer 🌍",
+                class_="navbar-brand fw-bold text-dark me-2"
+            )
+
         b, t, err = selected_range()
         if err:
             return ui.div("Invalid year selection", class_="text-danger fw-bold")
 
         country = input.country()
-
-        # Compact horizontal title line (navbar-brand styling)
         title_text = f"TempTales — {country}: {b} vs {t} (Temperature Comparison)"
 
         return ui.span(
@@ -534,4 +538,5 @@ def server(input: Inputs, output: Outputs, session: Session):
         return plot
     
 
-app = App(app_ui, server)
+from pathlib import Path
+app = App(app_ui, server, static_assets=Path(__file__).parent / "www")
