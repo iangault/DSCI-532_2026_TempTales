@@ -4,9 +4,8 @@
 
 import altair as alt
 import pandas as pd
-import pytest
-from src.plot import build_temp_chart
 
+from src.plot import build_temp_chart
 
 # ─────────────────────────────────────────────────────────────────────
 # Helper — build a realistic monthly comparison DataFrame

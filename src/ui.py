@@ -1,8 +1,9 @@
 # imports
 from shiny import ui
 from shinywidgets import output_widget
-from .utils import country_choices, min_year, max_year
+
 from .chat import qc
+from .utils import country_choices, max_year, min_year
 
 # ==========================================
 # 0. Footer Configuration (manual update on release)

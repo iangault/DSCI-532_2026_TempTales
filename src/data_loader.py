@@ -2,11 +2,10 @@
 # Author: Ian Gault
 # Date: Feb 12, 2026
 
-from pathlib import Path
 import shutil
-import kagglehub
-import pandas as pd
+from pathlib import Path
 
+import kagglehub
 
 DATASET = "berkeleyearth/climate-change-earth-surface-temperature-data"
 CSV_FILES = [

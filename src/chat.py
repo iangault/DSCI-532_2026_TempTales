@@ -1,10 +1,10 @@
 import os
 from pathlib import Path
-import pandas as pd
-from dotenv import load_dotenv
+
 import chatlas as ctl
-from querychat import QueryChat
+from dotenv import load_dotenv
 from ibis import _
+from querychat import QueryChat
 
 from .utils import df_monthly
 

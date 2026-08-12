@@ -1,22 +1,32 @@
 # imports
 import io
-from shiny import App, Inputs, Outputs, Session, reactive, render, ui
-from shinywidgets import render_altair, render_widget
+from pathlib import Path
+
 import altair as alt
 import pandas as pd
-from src.chat import qc
-import ibis
 from ibis import _
+from shiny import App, Inputs, Outputs, Session, reactive, render, ui
+from shinywidgets import render_altair, render_widget
+
+from src.chat import qc
+from src.data_count import data_count_prep
+from src.map import apply_country_highlight, build_base_map
+from src.plot import build_diff_plot, build_temp_chart, build_yearly_plot
+from src.table_styles import diverging_styles, table_styles_wide
+from src.ui import app_ui
 
 # =====================================
 # Import shared data, UI layout, and plot builders
 # =====================================
-from src.utils import df_yearly, df_seasonal, df_monthly, min_year, max_year, country_choices
-from src.ui import app_ui
-from src.plot import build_temp_chart, build_yearly_plot, build_diff_plot
-from src.data_count import data_count_prep
-from src.map import build_base_map, apply_country_highlight
-from src.table_styles import diverging_styles, table_styles_wide
+from src.utils import (
+    country_choices,
+    df_monthly,
+    df_seasonal,
+    df_yearly,
+    max_year,
+    min_year,
+)
+
 
 def server(input: Inputs, output: Outputs, session: Session):
 
@@ -554,7 +564,6 @@ def server(input: Inputs, output: Outputs, session: Session):
                 .configure_view(strokeWidth=0)
             )
         return build_diff_plot(df)
-    
 
-from pathlib import Path
+
 app = App(app_ui, server, static_assets=Path(__file__).parent / "www")

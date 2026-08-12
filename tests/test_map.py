@@ -1,6 +1,7 @@
 # Tests for apply_country_highlight() in src/map.py
 
 import pytest
+
 from src.map import apply_country_highlight, build_base_map
 
 

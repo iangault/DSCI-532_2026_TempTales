@@ -1,10 +1,8 @@
 # Tests for table_styles_wide() and diverging_styles() in src/table_styles.py
 
-import math
 import pandas as pd
-import pytest
-from src.table_styles import diverging_styles, table_styles_wide
 
+from src.table_styles import diverging_styles, table_styles_wide
 
 # ─────────────────────────────────────────────────────────────────────
 # Helper — build a minimal wide-format DataFrame

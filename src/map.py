@@ -1,5 +1,6 @@
 import plotly.graph_objects as go
 
+
 def build_base_map(all_countries):
     empty_z = [None] * len(all_countries)
 

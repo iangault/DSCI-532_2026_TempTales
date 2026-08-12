@@ -1,6 +1,6 @@
 # imports
 from pathlib import Path
-import pandas as pd
+
 import ibis
 from ibis import _
 

@@ -42,7 +42,6 @@ import time
 import pytest
 from playwright.sync_api import Page, expect
 
-
 # ─────────────────────────────────────────────────────────────────────
 # 1.  App subprocess fixture
 #     Starts `src/app.py` once for the whole test session and tears it

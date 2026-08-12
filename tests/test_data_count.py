@@ -3,9 +3,8 @@
 #   pytest tests/test_data_count.py -v
 
 import pandas as pd
-import pytest
-from src.data_count import data_count_prep
 
+from src.data_count import data_count_prep
 
 # ─────────────────────────────────────────────────────────────────────
 # Helper — build a minimal DataFrame that looks like filtered_global_data
