@@ -5,6 +5,7 @@ import chatlas as ctl
 from dotenv import load_dotenv
 from ibis import _
 from querychat import QueryChat
+from shinychat.types import HistoryOptions
 
 from .utils import df_monthly
 
@@ -147,7 +148,8 @@ qc = QueryChat(
     df_monthly.execute(),
     "temperature_data",
     client=chat,
-    greeting=_GREETING_CACHE if _GREETING_CACHE.exists() else None
+    greeting=_GREETING_CACHE if _GREETING_CACHE.exists() else None,
+    history=HistoryOptions(store="memory"),
 )
 
 if not _GREETING_CACHE.exists():
