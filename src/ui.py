@@ -318,6 +318,7 @@ data_table_css = ui.tags.style("""
 # ==========================================
 app_ui = ui.TagList(
     ui.tags.link(rel="stylesheet", href="styles.css"),
+    ui.tags.link(rel="icon", type="image/svg+xml", href="favicon.svg"),
     data_table_css,
     ui.page_navbar(
         ui.nav_panel("Dashboard", main_content, value="dashboard"),
