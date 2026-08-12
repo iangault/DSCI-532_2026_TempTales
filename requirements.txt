@@ -4,7 +4,7 @@ pandas
 numpy
 plotly
 shinywidgets
-chatlas
+chatlas[google]
 python-dotenv
 shinychat
 querychat

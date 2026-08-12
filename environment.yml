@@ -19,7 +19,7 @@ dependencies:
   - pip
   - pip:
     - kagglehub
-    - chatlas
+    - chatlas[google]
     - python-dotenv
     - shinychat
     - querychat

@@ -10,7 +10,7 @@
 
 This is a personal continuation of a UBC MDS group project (DSCI 532, 2026). The original dashboard was built collaboratively; this fork is a solo rebuild and improvement focused on production-readiness: adding CI, fixing test infrastructure, improving code quality, and preparing for redeployment.
 
-**Skills this project covers:** - **Python Shiny** — reactive server/UI separation, ibis lazy expressions, DuckDB backend - **Data visualization** — Altair (time-series, comparison charts), Plotly (choropleth map) - **Testing** — pytest unit tests + Playwright end-to-end browser tests (62 unit + 6 UI tests) - **CI/CD** — GitHub Actions workflow: unit tests → Playwright UI tests on every push/PR - **LLM integration** — GitHub Models API (`gpt-4.1-mini`) via `chatlas` + `querychat` for an AI assistant tab - **Cloud deployment** — Posit Connect Cloud via GitHub integration
+**Skills this project covers:** - **Python Shiny** — reactive server/UI separation, ibis lazy expressions, DuckDB backend - **Data visualization** — Altair (time-series, comparison charts), Plotly (choropleth map) - **Testing** — pytest unit tests + Playwright end-to-end browser tests (62 unit + 6 UI tests) - **CI/CD** — GitHub Actions workflow: unit tests → Playwright UI tests on every push/PR - **LLM integration** — Google Gemini API (`gemini-3.5-flash-lite`) via `chatlas` + `querychat` for an AI assistant tab - **Cloud deployment** — Posit Connect Cloud via GitHub integration
 
 ## Overview
 
@@ -26,7 +26,7 @@ Deployed dashboard: https://iangault-dsci-532-2026-temptales.share.connect.posit
 -   **Data table** — monthly comparison with red/blue diverging color scale; CSV export
 -   **World heatmap** — Plotly choropleth of global temperatures for the selected year
 -   **Seasonal breakdown** — seasonal averages and historical event context
--   **AI assistant** — natural language queries over the dataset via GitHub Models API
+-   **AI assistant** — natural language queries over the dataset via Google Gemini API
 
 ## Project structure
 
@@ -37,7 +37,7 @@ src/
 ├── plot.py          # Altair chart builders (monthly line, yearly, diff)
 ├── map.py           # Plotly choropleth map
 ├── utils.py         # ibis/DuckDB connection; pre-aggregated lazy tables
-├── chat.py          # QueryChat + ChatGithub setup for the AI tab
+├── chat.py          # QueryChat + ChatGoogle setup for the AI tab
 ├── data_count.py    # temperature/observation summary helpers
 └── table_styles.py  # diverging colour styles for DataGrid tables
 
@@ -65,10 +65,10 @@ conda activate 532_project
 make db
 ```
 
-**AI tab:** requires a `GITHUB_API_KEY` in a `.env` file at the project root. Get one at [github.com/marketplace/models](https://github.com/marketplace/models). Without it the app starts but the AI tab will error.
+**AI tab:** requires a `GOOGLE_API_KEY` in a `.env` file at the project root. Get one at [ai.google.dev](https://ai.google.dev/gemini-api/docs/get-started/tutorial?lang=python) (free tier available). Without it the app starts but the AI tab will error.
 
 ```         
-GITHUB_API_KEY=your_token_here
+GOOGLE_API_KEY=your_key_here
 ```
 
 **Run the app:**
@@ -100,7 +100,7 @@ pytest tests/test_ui_playwright.py -v -k "chromium"
 
 Target: **Posit Connect Cloud** via GitHub integration. `make run` is local-only.
 
--   Set `GITHUB_API_KEY` as an environment variable in the Connect app settings (not `.env`, which is local-only)
+-   Set `GOOGLE_API_KEY` as an environment variable in the Connect app settings (not `.env`, which is local-only)
 -   The parquet file is committed, so no Kaggle credentials are needed at deploy time
 
 ## Original contributors

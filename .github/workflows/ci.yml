@@ -29,5 +29,5 @@ jobs:
 
       - name: Run Playwright UI tests
         env:
-          GITHUB_API_KEY: ${{ secrets.GH_MODELS_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: pytest tests/test_ui_playwright.py -v -k "chromium"

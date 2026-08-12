@@ -10,9 +10,9 @@ from .utils import df_monthly
 
 load_dotenv()
 
-chat = ctl.ChatGithub(
-    api_key=os.getenv("GITHUB_API_KEY"),
-    model = "gpt-4.1-mini",
+chat = ctl.ChatGoogle(
+    api_key=os.getenv("GOOGLE_API_KEY"),
+    model = "gemini-3.5-flash-lite",
     system_prompt = """
         You are a climate data assistant for the TempTales dashboard.
 
